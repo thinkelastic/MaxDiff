@@ -6,44 +6,43 @@
 		watch,
 	} = Vue;
 
-	let getHeroImageURL = ((key) => `https://i.annihil.us/u/prod/marvel/i/mg/${key}/standard_xlarge.jpg`);
-	let heroes = [
+	let classes = [
 		{
-			name: 'Black Widow',
-			image: getHeroImageURL('f/30/50fecad1f395b'),
+			subject: "TCSS 440 Formal Models in Computer Science (5)",
+			description: "Covers languages, finite automata, regular expressions, context-free grammars, and other automata such as pushdown store machines and Turing machines. Includes models of computation, computable and non-computable functions, non-determinism, space and time complexity, tractable and intractable functions, non-determinism, space and time. Prerequisite: a minimum grade of 2.0 in TCSS 342."
 		},
 		{
-			name: 'Captain America',
-			image: getHeroImageURL('3/50/537ba56d31087'),
+			subject: "TCSS 461 Advanced Software Engineering (5)",
+			description: "Analyzes system re-engineering, domain-specific languages, generative development, system design and service-oriented architecture. Also covers how to handle legacy systems, utilize model driven software development to automate code generation and understand low to high level architectures, by using software engineering methodologies, refactoring, UML, and the Eclipse framework. Prerequisite: TCSS 360."
 		},
 		{
-			name: 'Deadpool',
-			image: getHeroImageURL('9/90/5261a86cacb99'),
+			subject: "TCSS 462 Cloud Computing (5)",
+			description: "Provides a broad overview of topics associated with cloud computing including fundamental principles, service delivery models, foundational and enabling technologies, architecture, design, and virtualization technology. Understanding and mastery is supported through hands-on tutorials, case studies, and a term project. Prerequisite: a minimum grade of 2.0 in TCSS 360."
 		},
 		{
-			name: 'Doctor Strange',
-			image: getHeroImageURL('5/f0/5261a85a501fe'),
+			subject: "TCSS 531 Cloud and Virtualization Systems Engineering (5)",
+			description: "Provides an introduction to cloud computing and virtualization - enabling multiple instances of operating systems to be run on a single physical system. Concepts include hypervisors, virtual machines, paravirtualization and virtual appliances for design of cloud computing platforms; server and desktop virtualization; storage, network, and application virtualization."
 		},
 		{
-			name: 'Hulk',
-			image: getHeroImageURL('5/a0/538615ca33ab0'),
+			subject: "TCSS 540 Theory of Computing (5)",
+			description: "Covers computational models including finite automata, regular expressions, context-free grammars, pushdown automata, Turing machines, and techniques for analyzing them. Basic computability theory and undecidability, computational complexity theory, and NP-completeness.",
 		},
 		{
-			name: 'Iron Man',
-			image: getHeroImageURL('6/a0/55b6a25e654e6'),
+			subject: "TCSS 544 Applied Linear Algebra (5)",
+			description: "Examines math concepts on linear algebra and linear transformation, and subjects on singular value decomposition, Fourier transforms, Wavelet transforms, and other topics. Students apply these math concepts and implement numerical solutions to problems in areas including pattern recognition, information retrieval, web search, image processing, cryptography, and machine learning."
 		},
 		{
-			name: 'Scarlet Witch',
-			image: getHeroImageURL('6/70/5261a7d7c394b'),
+			subject: "TCSS 558 Applied Distributed Computing (5)",
+			description: "Covers techniques and concepts associated with constructing software that is distributed, reliable, efficient, and extensible; programming multi-threaded applications, communication among objects on different computers, creating a server accessed by multiple clients, using common object design patterns, locating and tailoring components. Not available for elective credit."
 		},
 		{
-			name: 'Spider-Man',
-			image: getHeroImageURL('9/30/538cd33e15ab7'),
+			subject: "TCSS 559 Services Computing (5)",
+			description: "Covers fundamental concepts in the development of distributed software systems, cloud computing and service delivery models and the Service-Oriented Architecture (SOA). Topics include, but are not limited to, Simple Object Access Protocol (SOAP) and Representational State Transfer (REST) service development, microservices, SOA design patterns, service coordination protocol, service composition and performance management."
 		},
 		{
-			name: 'Thor',
-			image: getHeroImageURL('5/a0/537bc7036ab02'),
-		},
+			subject: "TCSS 562 Software Engineering for Cloud Computing (5)",
+			description: "Presents the principles of software engineering including: requirements analysis, design and prototyping, system analysis, testing, project management, software metrics, processes and lifecycles including Agile and DevOps in the context of the design and development of a distributed cloud based application."
+		}
 	];
 
 	new Vue({
@@ -60,7 +59,7 @@
 				};
 			});
 			let createSteps = (() => {
-				let instance = MaxDiff(_.shuffle(heroes));
+				let instance = MaxDiff(_.shuffle(classes));
 				return [createStep(instance)];
 			});
 			let stepsRef = shallowRef(createSteps());
@@ -77,8 +76,8 @@
 				return array[index];
 			});
 			let currMaxDiffInstanceRef = computed(() => currStepRef.value.instance);
-			let heroesRef = computed(() => currStepRef.value.candidates);
-			let coolHeroRef = customRef((track, trigger) => {
+			let classesRef = computed(() => currStepRef.value.candidates);
+			let coolClassRef = customRef((track, trigger) => {
 				return {
 					get() {
 						track();
@@ -93,7 +92,7 @@
 					},
 				};
 			});
-			let lameHeroRef = customRef((track, trigger) => {
+			let lameClassRef = customRef((track, trigger) => {
 				return {
 					get() {
 						track();
@@ -108,19 +107,19 @@
 					},
 				};
 			});
-			watch(coolHeroRef, (coolHero) => {
-				if (coolHero) {
-					let heroes = heroesRef.value;
-					if (heroes.length === 2) {
-						lameHeroRef.value = _.without(heroes, coolHero)[0];
+			watch(coolClassRef, (coolClass) => {
+				if (coolClass) {
+					let classes = classesRef.value;
+					if (classes.length === 2) {
+						lameClassRef.value = _.without(classes, coolClass)[0];
 					}
 				}
 			});
-			watch(lameHeroRef, (lameHero) => {
-				if (lameHero) {
-					let heroes = heroesRef.value;
-					if (heroes.length === 2) {
-						coolHeroRef.value = _.without(heroes, lameHero)[0];
+			watch(lameClassRef, (lameClass) => {
+				if (lameClass) {
+					let classes = classesRef.value;
+					if (classes.length === 2) {
+						coolClassRef.value = _.without(classes, lameClass)[0];
 					}
 				}
 			});
@@ -134,17 +133,17 @@
 				}
 			});
 			let goToNextStepRef = computed(() => {
-				let coolHero = coolHeroRef.value;
-				let lameHero = lameHeroRef.value;
-				if (coolHero && lameHero && coolHero !== lameHero) {
+				let coolClass = coolClassRef.value;
+				let lameClass = lameClassRef.value;
+				if (coolClass && lameClass && coolClass !== lameClass) {
 					return (() => {
 						let instance = currMaxDiffInstanceRef.value;
 						instance = instance.clone();
-						instance.order(coolHero, lameHero);
-						let heroes = heroesRef.value;
-						heroes.forEach((hero) => {
-							if (hero !== coolHero && hero !== lameHero) {
-								instance.order(coolHero, hero, lameHero);
+						instance.order(coolClass, lameClass);
+						let classes = classesRef.value;
+						classes.forEach((subject) => {
+							if (subject !== coolClass && subject !== lameClass) {
+								instance.order(coolClass, subject, lameClass);
 							}
 						});
 						let steps = stepsRef.value;
@@ -164,9 +163,9 @@
 				result: computed(() => currMaxDiffInstanceRef.value.result),
 				intermediateResult: computed(() => currMaxDiffInstanceRef.value.getOrderedGroups()),
 				showIntermediateResult: shallowRef(false),
-				heroes: heroesRef,
-				coolHero: coolHeroRef,
-				lameHero: lameHeroRef,
+				classes: classesRef,
+				coolClass: coolClassRef,
+				lameClass: lameClassRef,
 				goToNextStep: goToNextStepRef,
 				goToPrevStep: goToPrevStepRef,
 				restart,
